@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Angel Holmes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --parchment:#f0e8dc;
+  --ink:#1a1410;
+  --wine:#7a1528;
+  --terra:#b85c38;
+  --blush:#e8c4a0;
+  --steel:#4a6b8a;
+  --charcoal:#2a2d35;
+  --ash:#6b6258;
+  --dust:#c4b89a;
+  --pure:#fafafa;
+}
+html{scroll-behavior:smooth}
+body{background:var(--parchment);color:var(--ink);font-family:'Libre Baskerville',serif;overflow-x:hidden}
+
+/* CURSOR */
+.cursor{position:fixed;width:8px;height:8px;background:var(--wine);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;transition:transform 0.1s}
+.cursor-ring{position:fixed;width:32px;height:32px;border:1px solid var(--wine);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all 0.15s ease;mix-blend-mode:multiply;opacity:0.5}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;background:rgba(240,232,220,0.97);border-bottom:1px solid rgba(107,98,88,0.12)}
+.nav-name{font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:var(--ink)}
+.nav-links{display:flex;gap:40px}
+.nav-links a{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ash);text-decoration:none;transition:color 0.2s}
+.nav-links a:hover{color:var(--wine)}
+
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
+.hero-left{display:flex;flex-direction:column;justify-content:flex-end;padding:140px 48px 80px;border-right:1px solid rgba(107,98,88,0.12)}
+.hero-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--ash);margin-bottom:28px}
+.hero-name{font-family:'Playfair Display',serif;font-size:clamp(64px,9vw,130px);font-weight:900;line-height:0.88;letter-spacing:-3px;color:var(--ink);margin-bottom:48px}
+.hero-name span{display:block;color:var(--wine);font-style:italic}
+.hero-desc{font-size:13px;line-height:2.1;color:var(--ash);max-width:360px;font-style:italic;border-top:1px solid rgba(107,98,88,0.15);padding-top:28px;margin-bottom:32px}
+.hero-ctas{display:flex;gap:20px}
+.hero-cta{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ash);text-decoration:none;border-bottom:1px solid rgba(107,98,88,0.3);padding-bottom:4px;transition:color 0.2s}
+.hero-cta:hover{color:var(--wine)}
+.hero-right{background:var(--ink);display:flex;flex-direction:column;justify-content:flex-end;padding:140px 56px 80px;position:relative;overflow:hidden}
+.hero-right::before{content:'AH';position:absolute;bottom:-40px;right:-20px;font-family:'Playfair Display',serif;font-size:280px;font-weight:900;font-style:italic;color:rgba(255,255,255,0.03);line-height:1;pointer-events:none}
+.hero-stats{margin-bottom:48px}
+.hero-stat{margin-bottom:40px}
+.hero-stat-n{font-family:'Playfair Display',serif;font-size:64px;font-weight:900;font-style:italic;color:var(--pure);line-height:1;display:block}
+.hero-stat-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-top:8px}
+.hero-stat-divider{width:32px;height:1px;background:var(--wine);margin:24px 0}
+.hero-contact{border-top:1px solid rgba(255,255,255,0.06);padding-top:28px;display:flex;gap:24px}
+.hero-contact a{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.2s}
+.hero-contact a:hover{color:var(--pure)}
+.marquee-bar{background:var(--wine);padding:10px 0;overflow:hidden;white-space:nowrap;position:relative;z-index:1}
+.marquee-inner{display:inline-flex;animation:scroll 22s linear infinite}
+.marquee-inner span{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.7);padding:0 32px}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* INDEX PAGE — the cover */
+.index-page{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:100px 48px;background:var(--parchment);position:relative;overflow:hidden;border-top:1px solid rgba(107,98,88,0.1)}
+.index-page::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(107,98,88,0.03) 40px,rgba(107,98,88,0.03) 41px);pointer-events:none}
+.index-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--ash);margin-bottom:48px;text-align:center}
+.index-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;width:100%;max-width:1100px;position:relative;z-index:1}
+.zine-card{position:relative;cursor:pointer;overflow:hidden;aspect-ratio:3/4;background:var(--ink)}
+.zine-card-img{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform 0.6s ease,filter 0.4s ease;filter:brightness(0.6)}
+.zine-card:hover .zine-card-img{transform:scale(1.04);filter:brightness(0.45)}
+.zine-card-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:32px;z-index:2}
+.zine-card-num{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:12px}
+.zine-card-title{font-family:'Playfair Display',serif;font-size:clamp(28px,3vw,42px);font-weight:900;font-style:italic;color:var(--pure);line-height:1;margin-bottom:8px}
+.zine-card-sub{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4)}
+.zine-card-open{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--wine);margin-top:20px;display:flex;align-items:center;gap:8px;opacity:0;transition:opacity 0.3s}
+.zine-card-open::after{content:'→'}
+.zine-card:hover .zine-card-open{opacity:1}
+
+/* ZINE OVERLAY */
+.zine-overlay{position:fixed;inset:0;z-index:600;display:none;overflow-y:auto}
+.zine-overlay.open{display:block}
+.zine-close{position:fixed;top:24px;right:32px;z-index:700;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:8px;padding:10px 20px;border:1px solid rgba(255,255,255,0.15);transition:all 0.2s}
+.zine-close::before{content:'←'}
+.zine-close:hover{background:var(--wine);border-color:var(--wine)}
+
+/* ============================== */
+/* ZINE 1 — DOLL HOUSE */
+/* Warm terracotta editorial */
+/* ============================== */
+#zine-doll{background:var(--parchment);color:var(--ink)}
+#zine-doll .zine-close{color:var(--ink);border-color:rgba(26,20,16,0.2)}
+#zine-doll .zine-close:hover{color:var(--pure)}
+.doll-cover{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative}
+.doll-cover-left{background:var(--terra);padding:120px 56px 80px;display:flex;flex-direction:column;justify-content:flex-end}
+.doll-cover-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:24px}
+.doll-cover-title{font-family:'Playfair Display',serif;font-size:clamp(56px,8vw,110px);font-weight:900;line-height:0.88;letter-spacing:-3px;color:var(--pure);margin-bottom:40px}
+.doll-cover-title em{font-style:italic;color:var(--blush);display:block}
+.doll-cover-desc{font-size:13px;line-height:2;color:rgba(255,255,255,0.65);font-style:italic;border-top:1px solid rgba(255,255,255,0.15);padding-top:24px}
+.doll-cover-right{background:var(--blush);padding:120px 56px 80px;display:flex;flex-direction:column;justify-content:center;gap:16px}
+.doll-cover-right .tag{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--terra);border:1px solid rgba(184,92,56,0.3);padding:6px 14px;display:inline-block;background:transparent}
+.doll-board-section{padding:64px 48px;background:rgba(232,196,160,0.25);border-top:1px solid rgba(184,92,56,0.15)}
+.doll-board{background:rgba(184,92,56,0.08);padding:48px;position:relative;overflow:hidden}
+.doll-board::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(184,92,56,0.04) 28px,rgba(184,92,56,0.04) 29px);pointer-events:none}
+.board-flow{display:flex;flex-wrap:wrap;align-items:flex-start;gap:20px;position:relative;z-index:1}
+.pin{position:relative;display:inline-block;background:#fefcf8;box-shadow:2px 4px 16px rgba(0,0,0,0.12),0 1px 3px rgba(0,0,0,0.08);flex-shrink:0;transition:transform 0.3s ease,box-shadow 0.3s ease,z-index 0s}
+.pin:hover{box-shadow:4px 8px 24px rgba(0,0,0,0.18);z-index:20}
+.pin:hover.r1,.pin:hover.r2,.pin:hover.r3,.pin:hover.r4,.pin:hover.r5,.pin:hover.r6,.pin:hover.r7,.pin:hover.r8{transform:rotate(0deg) scale(1.03)}
+.pin-photo{display:block;overflow:hidden;margin:8px 8px 0 8px}
+.pin-photo img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in}
+.pin-bottom{height:36px}
+.pin::after{content:'';position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#e8a090,var(--terra));box-shadow:0 2px 5px rgba(0,0,0,0.25);z-index:2}
+.pin-port .pin-photo{width:180px;height:240px}
+.pin-port-lg .pin-photo{width:240px;height:320px}
+.pin-sq .pin-photo{width:200px;height:200px}
+.pin-sq-lg .pin-photo{width:280px;height:280px}
+.pin-land .pin-photo{width:300px;height:188px}
+.r1{transform:rotate(-2.5deg)}.r2{transform:rotate(1.8deg)}.r3{transform:rotate(-1.2deg)}
+.r4{transform:rotate(3.1deg)}.r5{transform:rotate(-3.5deg)}.r6{transform:rotate(0.8deg)}
+.r7{transform:rotate(2.3deg)}.r8{transform:rotate(-1.7deg)}
+
+/* ============================== */
+/* ZINE 2 — TUPAC */
+/* Steel blue cinematic */
+/* ============================== */
+#zine-tupac{background:var(--charcoal);color:var(--pure)}
+#zine-tupac .zine-close{color:var(--pure)}
+.tupac-cover{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative}
+.tupac-cover-left{padding:120px 56px 80px;display:flex;flex-direction:column;justify-content:flex-end;background:var(--charcoal);position:relative;overflow:hidden}
+.tupac-cover-left::before{content:'002';position:absolute;bottom:-20px;left:-10px;font-family:'Playfair Display',serif;font-size:320px;font-weight:900;font-style:italic;color:rgba(255,255,255,0.02);line-height:1;pointer-events:none}
+.tupac-cover-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--steel);margin-bottom:24px;position:relative;z-index:1}
+.tupac-cover-title{font-family:'Playfair Display',serif;font-size:clamp(56px,8vw,110px);font-weight:900;line-height:0.88;letter-spacing:-3px;color:var(--pure);margin-bottom:40px;position:relative;z-index:1}
+.tupac-cover-title em{font-style:italic;color:var(--steel);display:block}
+.tupac-cover-desc{font-size:13px;line-height:2;color:rgba(255,255,255,0.45);font-style:italic;border-top:1px solid rgba(255,255,255,0.08);padding-top:24px;position:relative;z-index:1}
+.tupac-cover-right{background:#1e2129;position:relative;overflow:hidden}
+.tupac-cover-right img{width:100%;height:100%;object-fit:cover;opacity:0.7;filter:contrast(1.1);mix-blend-mode:luminosity;display:block}
+.tupac-cover-right:hover img{opacity:0.9;mix-blend-mode:normal;filter:none;transition:all 0.5s ease}
+.tupac-gallery-section{padding:2px 0;background:var(--charcoal)}
+.tupac-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.tupac-gallery img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;filter:grayscale(20%) contrast(1.05);transition:filter 0.4s,transform 0.4s;cursor:zoom-in}
+.tupac-gallery img:hover{filter:none;transform:scale(1.01);z-index:2;position:relative}
+.tupac-process-section{padding:80px 48px;background:#1e2129;border-top:1px solid rgba(255,255,255,0.04)}
+.tupac-process-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--steel);margin-bottom:48px}
+.tupac-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.tupac-step{padding:0 48px 0 0;border-right:1px solid rgba(255,255,255,0.05)}
+.tupac-step:first-child{padding-left:0}
+.tupac-step:last-child{border-right:none}
+.tupac-step-num{font-family:'Playfair Display',serif;font-size:48px;font-weight:900;font-style:italic;color:var(--steel);opacity:0.4;line-height:1;margin-bottom:16px}
+.tupac-step-text{font-size:12px;line-height:2;color:rgba(255,255,255,0.4);font-style:italic}
+.tupac-tags-section{padding:40px 48px;background:var(--charcoal);display:flex;gap:10px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,0.04)}
+.tupac-tag{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--steel);border:1px solid rgba(74,107,138,0.3);padding:6px 14px}
+
+/* ============================== */
+/* ZINE 3 — AKARA */
+/* Deep black bold expressive */
+/* ============================== */
+#zine-akara{background:#0a0a0a;color:var(--pure)}
+#zine-akara .zine-close{color:var(--pure)}
+.akara-cover{min-height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:120px 56px 80px}
+.akara-cover::before{content:'AKARA';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Playfair Display',serif;font-size:clamp(160px,22vw,340px);font-weight:900;font-style:italic;color:rgba(255,255,255,0.022);pointer-events:none;white-space:nowrap;line-height:1;letter-spacing:-12px}
+.akara-cover-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--wine);margin-bottom:24px;position:relative;z-index:1}
+.akara-cover-title{font-family:'Playfair Display',serif;font-size:clamp(100px,18vw,240px);font-weight:900;font-style:italic;line-height:0.82;letter-spacing:-8px;color:var(--pure);margin-bottom:16px;position:relative;z-index:1}
+.akara-cover-sub{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:48px;position:relative;z-index:1}
+.akara-cover-desc{font-size:13px;line-height:2.1;color:rgba(255,255,255,0.4);font-style:italic;max-width:560px;border-top:1px solid rgba(255,255,255,0.06);padding-top:28px;position:relative;z-index:1}
+.akara-images-section{padding:2px 0;background:#0a0a0a}
+.akara-img-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px}
+.akara-img-grid img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;display:block;cursor:zoom-in;transition:opacity 0.3s}
+.akara-img-grid img:hover{opacity:0.85}
+.akara-process-section{padding:80px 48px;background:#111;border-top:1px solid rgba(255,255,255,0.03)}
+.akara-process-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--wine);margin-bottom:48px}
+.akara-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.akara-step{padding:0 40px 0 0;border-right:1px solid rgba(255,255,255,0.04)}
+.akara-step:first-child{padding-left:0}
+.akara-step:last-child{border-right:none}
+.akara-step-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:900;font-style:italic;color:var(--wine);opacity:0.5;line-height:1;margin-bottom:16px}
+.akara-step-text{font-size:12px;line-height:2;color:rgba(255,255,255,0.35);font-style:italic}
+.akara-videos-section{padding:60px 48px;background:#0a0a0a;border-top:1px solid rgba(255,255,255,0.04)}
+.akara-videos-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--wine);margin-bottom:32px}
+.akara-video-links{display:flex;gap:16px;flex-wrap:wrap}
+.akara-video-link{display:flex;align-items:center;gap:16px;text-decoration:none;border:1px solid rgba(255,255,255,0.07);padding:20px 28px;transition:border-color 0.2s,background 0.2s;flex:1;min-width:280px}
+.akara-video-link:hover{border-color:var(--wine);background:rgba(122,21,40,0.08)}
+.play-btn{width:36px;height:36px;border:1px solid var(--wine);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.play-btn::after{content:'';width:0;height:0;border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent var(--wine);margin-left:3px}
+.akara-video-meta{}
+.akara-video-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:4px}
+.akara-video-title{font-size:13px;color:var(--pure);font-style:italic}
+.akara-tags-section{padding:40px 48px;background:#111;border-top:1px solid rgba(255,255,255,0.03);display:flex;gap:10px;flex-wrap:wrap}
+.akara-tag{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.08);padding:6px 14px}
+
+/* SKILLS */
+.skills-sec{padding:100px 48px;background:var(--parchment);border-top:1px solid rgba(107,98,88,0.12)}
+.skills-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--wine);margin-bottom:16px}
+.skills-title{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,64px);font-weight:900;line-height:0.92;letter-spacing:-2px;color:var(--ink);margin-bottom:64px}
+.skills-title em{font-style:italic;color:var(--wine)}
+.skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid rgba(107,98,88,0.12);padding-top:48px}
+.skill-col{padding:0 40px;border-right:1px solid rgba(107,98,88,0.12)}
+.skill-col:first-child{padding-left:0}
+.skill-col:last-child{border-right:none}
+.skill-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--wine);margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid rgba(107,98,88,0.12);display:block}
+.skill-item{font-size:13px;color:var(--ash);padding:9px 0;border-bottom:1px solid rgba(107,98,88,0.07);font-style:italic}
+.skill-item:last-child{border-bottom:none}
+
+/* NUMBERS */
+.numbers-sec{background:var(--wine);padding:80px 48px}
+.numbers-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+.num-block{padding:0 48px;border-right:1px solid rgba(255,255,255,0.12)}
+.num-block:first-child{padding-left:0}
+.num-block:last-child{border-right:none}
+.num-n{font-family:'Playfair Display',serif;font-size:clamp(48px,6vw,80px);font-weight:900;font-style:italic;color:var(--pure);line-height:1;display:block;margin-bottom:12px}
+.num-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45);line-height:1.8}
+
+/* EXPERIENCE */
+.exp-sec{background:var(--parchment);padding:100px 48px}
+.exp-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--wine);margin-bottom:16px}
+.exp-title{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,64px);font-weight:900;line-height:0.92;letter-spacing:-2px;color:var(--ink);margin-bottom:64px}
+.exp-title em{font-style:italic;color:var(--wine)}
+.exp-row{display:grid;grid-template-columns:180px 1fr;gap:48px;padding:36px 0;border-bottom:1px solid rgba(107,98,88,0.1)}
+.exp-row:last-child{border-bottom:none}
+.exp-dates{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--dust);text-transform:uppercase;line-height:1.9;padding-top:4px}
+.exp-co{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ash);margin-bottom:8px;opacity:0.6}
+.exp-role{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;font-style:italic;color:var(--ink);margin-bottom:12px}
+.exp-desc{font-size:13px;color:var(--ash);line-height:2;font-style:italic;margin-bottom:16px}
+.exp-tags{display:flex;flex-wrap:wrap;gap:8px}
+.exp-tag{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ash);border:1px solid rgba(107,98,88,0.2);padding:5px 12px}
+
+/* EDUCATION */
+.edu-sec{background:var(--ink);padding:100px 48px}
+.edu-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--wine);margin-bottom:16px}
+.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-top:48px}
+.edu-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:24px;display:block}
+.edu-h{font-family:'Playfair Display',serif;font-size:clamp(22px,2.5vw,34px);font-weight:700;font-style:italic;color:var(--pure);line-height:1.3;margin-bottom:20px}
+.edu-meta{font-size:13px;color:rgba(255,255,255,0.35);line-height:2.2;font-style:italic}
+.course-item{font-size:13px;color:rgba(255,255,255,0.35);padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-style:italic}
+.course-item:last-child{border-bottom:none}
+
+/* FOOTER */
+footer{background:var(--ink);padding:60px 48px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.04)}
+.footer-name{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,52px);font-weight:900;font-style:italic;color:var(--pure)}
+.footer-name sup{font-size:0.4em;vertical-align:super;color:var(--wine)}
+.footer-info{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,0.25);text-align:right;line-height:2.4}
+.footer-info a{color:rgba(255,255,255,0.25);text-decoration:none;transition:color 0.2s}
+.footer-info a:hover{color:var(--pure)}
+
+/* LIGHTBOX */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(5,3,2,0.96);z-index:1000;align-items:center;justify-content:center;padding:40px}
+.lightbox.open{display:flex}
+.lightbox img{max-width:90vw;max-height:90vh;object-fit:contain}
+.lightbox-close{position:fixed;top:24px;right:32px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.3);cursor:pointer;transition:color 0.2s}
+.lightbox-close:hover{color:var(--pure)}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-name">Angel Holmes</span>
+  <div class="nav-links">
+    <a href="#work">Work</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="mailto:angelholmes_@outlook.com">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Fashion &middot; AI Creative Production &middot; Client Operations &middot; Fort Worth TX</p>
+    <h1 class="hero-name">Angel<span>Holmes</span></h1>
+    <p class="hero-desc">Fashion merchandising student and AI creative practitioner. 7+ years in client-facing and operations roles. Building AI-powered fashion campaigns across Runway ML, ChatGPT, Higgsfield, and Claude.</p>
+    <div class="hero-ctas">
+      <a href="mailto:angelholmes_@outlook.com" class="hero-cta">Email</a>
+      <a href="https://linkedin.com/in/angelholmes26" target="_blank" class="hero-cta">LinkedIn</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-n">100%</span>
+        <p class="hero-stat-label">CSAT every recorded week</p>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <span class="hero-stat-n">99.8</span>
+        <p class="hero-stat-label">QA score 20+ consecutive weeks</p>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <span class="hero-stat-n">7+</span>
+        <p class="hero-stat-label">Years client &amp; customer facing</p>
+      </div>
+    </div>
+    <div class="hero-contact">
+      <a href="mailto:angelholmes_@outlook.com">angelholmes_@outlook.com</a>
+      <a href="https://linkedin.com/in/angelholmes26" target="_blank">linkedin.com/in/angelholmes26</a>
+    </div>
+  </div>
+</section>
+<div class="marquee-bar">
+  <div class="marquee-inner">
+    <span>Runway ML</span><span>&middot;</span><span>ChatGPT</span><span>&middot;</span><span>Higgsfield</span><span>&middot;</span><span>Claude</span><span>&middot;</span><span>Canva AI</span><span>&middot;</span><span>Gen-4 Image</span><span>&middot;</span><span>Gen-4 Video</span><span>&middot;</span><span>HappyHorse 1.0</span><span>&middot;</span><span>SCAMPER</span><span>&middot;</span>
+    <span>Runway ML</span><span>&middot;</span><span>ChatGPT</span><span>&middot;</span><span>Higgsfield</span><span>&middot;</span><span>Claude</span><span>&middot;</span><span>Canva AI</span><span>&middot;</span><span>Gen-4 Image</span><span>&middot;</span><span>Gen-4 Video</span><span>&middot;</span><span>HappyHorse 1.0</span><span>&middot;</span><span>SCAMPER</span><span>&middot;</span>
+  </div>
+</div>
+
+<!-- INDEX -->
+<section class="index-page" id="work">
+  <p class="index-label">Selected Work &mdash; Click to Open</p>
+  <div class="index-grid">
+
+    <div class="zine-card" onclick="openZine('zine-doll')">
+      <div class="zine-card-img" style="background-image:url('https://cdn.prod.website-files.com/6a0aa7ef89da8343393b262a/6a0b222a52bdbbdc9800a230_ChatGPT%20Image%20May%2018%2C%202026%2C%2009_25_26%20AM.png')"></div>
+      <div class="zine-card-content">
+        <p class="zine-card-num">001 &mdash; FAMD 3375 &amp; 4359</p>
+        <h2 class="zine-card-title">The Doll House</h2>
+        <p class="zine-card-sub">Doll&rsquo;d Up Capsule 01</p>
+        <p class="zine-card-open">Open</p>
+      </div>
+    </div>
+
+    <div class="zine-card" onclick="openZine('zine-tupac')">
+      <div class="zine-card-img" style="background-image:url('https://cdn.prod.website-files.com/6a0aa7ef89da8343393b262a/6a0b2381c631f530d57cc75b_ChatGPT%20Image%20May%2018%2C%202026%2C%2012_35_12%20AM.png')"></div>
+      <div class="zine-card-content">
+        <p class="zine-card-num">002 &mdash; FAMD 4359</p>
+        <h2 class="zine-card-title">Tupac Reimagined</h2>
+        <p class="zine-card-sub">Spring Editorial &middot; 2026</p>
+        <p class="zine-card-open">Open</p>
+      </div>
+    </div>
+
+    <div class="zine-card" onclick="openZine('zine-akara')">
+      <div class="zine-card-img" style="background-image:url('https://raw.githubusercontent.com/ciantholm-ui/angel-holmes-portfolio/main/GPT%20Image%202%20-%20White%20seamless%20background%20fills%20the%20frame_Subject%20Black%20female%20with%20deep%20ebony%20skin%20an.png');background-position:top"></div>
+      <div class="zine-card-content">
+        <p class="zine-card-num">003 &mdash; AI Model Development</p>
+        <h2 class="zine-card-title">Akara</h2>
+        <p class="zine-card-sub">AI Model &amp; Creative Direction</p>
+        <p class="zine-card-open">Open</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills-sec" id="skills">
+  <p class="skills-eyebrow">Capabilities</p>
+  <h2 class="skills-title">Skills &amp; <em>Tools</em></h2>
+  <div class="skills-grid">
+    <div class="skill-col">
+      <span class="skill-label">AI &amp; Creative</span>
+      <div class="skill-item">Runway ML</div><div class="skill-item">Claude</div><div class="skill-item">ChatGPT</div><div class="skill-item">Google Gemini</div><div class="skill-item">Canva AI</div><div class="skill-item">Higgsfield</div><div class="skill-item">Leonardo.ai</div>
+    </div>
+    <div class="skill-col">
+      <span class="skill-label">Client Support</span>
+      <div class="skill-item">Zendesk</div><div class="skill-item">Jira</div><div class="skill-item">Boomi</div><div class="skill-item">Datadog</div><div class="skill-item">sFTP &amp; JSON</div><div class="skill-item">Excel</div><div class="skill-item">QA Processes</div><div class="skill-item">SLA Management</div>
+    </div>
+    <div class="skill-col">
+      <span class="skill-label">Fashion Strategy</span>
+      <div class="skill-item">Capsule Collection Dev</div><div class="skill-item">SCAMPER Framework</div><div class="skill-item">Competitive Analysis</div><div class="skill-item">Editorial Art Direction</div><div class="skill-item">Ecommerce Content</div>
+    </div>
+    <div class="skill-col">
+      <span class="skill-label">In Progress</span>
+      <div class="skill-item">SQL</div><div class="skill-item">Google Looker Studio</div><div class="skill-item">Runway Academy</div>
+    </div>
+  </div>
+</section>
+
+<!-- NUMBERS -->
+<section class="numbers-sec">
+  <div class="numbers-grid">
+    <div class="num-block"><span class="num-n">100%</span><span class="num-label">CSAT every<br>recorded week</span></div>
+    <div class="num-block"><span class="num-n">99.8</span><span class="num-label">QA score<br>20+ weeks</span></div>
+    <div class="num-block"><span class="num-n">46</span><span class="num-label">Avg tickets<br>per week</span></div>
+    <div class="num-block"><span class="num-n">7+</span><span class="num-label">Years client &amp;<br>customer facing</span></div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="exp-sec" id="experience">
+  <p class="exp-eyebrow">Background</p>
+  <h2 class="exp-title">Experi<em>ence</em></h2>
+  <div class="exp-row">
+    <div class="exp-dates">Jul 2024<br>Present</div>
+    <div><p class="exp-co">DailyPay &middot; Remote</p><h3 class="exp-role">Client Support Analyst</h3><p class="exp-desc">Joined the CSA team working exclusively with enterprise and strategic clients from day one. Maintained 100% CSAT every recorded week and 99.8&ndash;100 QA score across 20+ consecutive weeks. Average 46 tickets per week. Rebuilt the client communication tracker and updated the interdepartmental collaboration matrix.</p><div class="exp-tags"><span class="exp-tag">Enterprise Clients</span><span class="exp-tag">Zendesk</span><span class="exp-tag">Jira</span><span class="exp-tag">Boomi</span><span class="exp-tag">Datadog</span></div></div>
+  </div>
+  <div class="exp-row">
+    <div class="exp-dates">Jun 2023<br>Jul 2024</div>
+    <div><p class="exp-co">DailyPay &middot; Remote</p><h3 class="exp-role">Team Lead, Customer Operations</h3><p class="exp-desc">Led a team of customer operations agents. Monitored quality, coached on escalations, and maintained SLA compliance. Primary escalation point for complex client issues.</p><div class="exp-tags"><span class="exp-tag">Team Leadership</span><span class="exp-tag">QA Oversight</span><span class="exp-tag">SLA Management</span></div></div>
+  </div>
+  <div class="exp-row">
+    <div class="exp-dates">Jul 2022<br>Jun 2023</div>
+    <div><p class="exp-co">DailyPay &middot; Remote</p><h3 class="exp-role">Customer Advocate, Enrollment Operations</h3><p class="exp-desc">Managed employee enrollment support and client onboarding within DailyPay's earned wage access platform.</p><div class="exp-tags"><span class="exp-tag">Client Onboarding</span><span class="exp-tag">Enrollment Ops</span><span class="exp-tag">Fintech</span></div></div>
+  </div>
+  <div class="exp-row">
+    <div class="exp-dates">Mar 2020<br>Aug 2021</div>
+    <div><p class="exp-co">Valor Global &middot; Phoenix AZ</p><h3 class="exp-role">Lead Corporate Trainer</h3><p class="exp-desc">Designed and delivered onboarding and skills training during a full transition from on-site to remote operations during COVID.</p><div class="exp-tags"><span class="exp-tag">Training Design</span><span class="exp-tag">Remote Ops</span><span class="exp-tag">Curriculum Dev</span></div></div>
+  </div>
+  <div class="exp-row">
+    <div class="exp-dates">Jan 2019<br>Mar 2020</div>
+    <div><p class="exp-co">Valor Global &middot; Phoenix AZ</p><h3 class="exp-role">Customer Service Agent</h3><p class="exp-desc">Handled inbound customer support across high-volume queues. Built foundational client communication and problem-solving skills.</p><div class="exp-tags"><span class="exp-tag">Customer Support</span><span class="exp-tag">High Volume</span><span class="exp-tag">Client Comms</span></div></div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="edu-sec">
+  <p class="edu-eyebrow">Education</p>
+  <div class="edu-grid">
+    <div>
+      <span class="edu-label">Degree</span>
+      <h3 class="edu-h">B.S. Fashion Merchandising<br>Minor in Entrepreneurship</h3>
+      <p class="edu-meta">Sam Houston State University<br>Online &middot; Expected May 2027<br>4.0 Major GPA</p>
+    </div>
+    <div>
+      <span class="edu-label">Relevant Coursework</span>
+      <div class="course-item">Fashion Brand Management (FAMD 3375)</div>
+      <div class="course-item">Fashion Innovation &amp; Creativity (FAMD 4359)</div>
+      <div class="course-item">Retail Analytics</div>
+      <div class="course-item">Ecommerce Operations</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-name">Angel Holmes<sup>'26</sup></span>
+  <div class="footer-info">
+    <a href="mailto:angelholmes_@outlook.com">angelholmes_@outlook.com</a><br>
+    <a href="https://linkedin.com/in/angelholmes26" target="_blank">linkedin.com/in/angelholmes26</a><br>
+    Fort Worth, TX &middot; Open to remote
+  </div>
+</footer>
+
+<!-- ZINE 1 — DOLL HOUSE -->
+<div class="zine-overlay" id="zine-doll">
+  <span class="zine-close" onclick="closeZine('zine-doll')" style="color:var(--ink);border-color:rgba(26,20,16,0.15)">Back</span>
+  <div class="doll-cover">
+    <div class="doll-cover-left">
+      <p class="doll-cover-eyebrow">001 &mdash; FAMD 3375 &amp; 4359 &middot; Real Client</p>
+      <h2 class="doll-cover-title">The Doll<em>House</em></h2>
+      <p class="doll-cover-desc">Full brand campaign for a real Houston boutique carrying 65+ women-owned brands. Competitive analysis, SCAMPER strategy, 9-piece capsule collection, editorial photoshoot with 5 models, website mockup, and a 5-node Runway ML workflow for ongoing AI-generated campaign content.</p>
+    </div>
+    <div class="doll-cover-right">
+      <span class="doll-cover-right .tag">Runway ML</span>
+      <span class="doll-cover-right .tag">ChatGPT</span>
+      <span class="doll-cover-right .tag">Canva AI</span>
+      <span class="doll-cover-right .tag">Claude</span>
+      <span class="doll-cover-right .tag">Google Gemini</span>
+    </div>
+  </div>
+  <div class="doll-board-section">
+    <div class="doll-board">
+      <div class="board-flow">
+        <div class="pin pin-port-lg r2"><div class="pin-photo"><img src="https://cdn.prod.website-files.com/6a0aa7ef89da8343393b262a/6a0b222a52bdbbdc9800a230_ChatGPT%20Image%20May%2018%2C%202026%2C%2009_25_26%20AM.png" alt=""></div><div class="pin-bottom"></div></div>
+        <div style="display:flex;flex-direction:column;gap:20px;margin-top:40px">
+          <div class="pin pin-port r5"><div class="pin-photo"><img src="https://cdn.prod.website-files.com/6a0aa7ef89da8343393b262a/6a0b222ae4ec0afbd2d64412_ChatGPT%20Image%20May%2018%2C%202026%2C%2009_26_06%20AM.png" alt=""></div><div class="pin-bottom"></div></div>
+          <div class="pin pin-sq r1"><div class="pin-photo"><img src="https://cdn.prod.website-files.com/6a0aa7ef89da8343393b262a/6a0b222acb03de835e02b922_ChatGPT%20Image%20May%2018%2C%202026%2C%2009_27_00%20AM.png" alt=""></div><div class="pin-bottom"></div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:20px;margin-top:20px">
+          <div class="pin pin-land r3"><div class="pin-photo"><img src="https://cdn.prod.website-files.com/6a0aa7ef89da8343393b262a/6a0b2229bd217b698278cc87_ChatGPT%20Image%20May%2018%2C%202026%2C%2009_26_30%20AM.png" alt=""></div><div class="pin-bottom"></div></div>
+          <div class="pin pin-port r7"><div class="pin-photo"><img src="https://cdn.prod.website-files.com/6a0aa7ef89da8343393b262a/6a0b222a6d835efc74898ce2_ChatGPT%20Image%20May%2018%2C%202026%2C%2009_28_20%20AM.png" alt=""></div><div class="pin-bottom"></div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:20px;margin-top:60px">
+          <div class="pin pin-sq r4"><div class="pin-photo"><img src="https://cdn.prod.website-files.com/6a0aa7ef89da8343393b262a/6a0b222a137be09944ef85eb_ChatGPT%20Image%20May%2018%2C%202026%2C%2009_20_54%20AM.png" alt=""></div><div class="pin-bottom"></div></div>
+          <div class="pin pin-port r8"><div class="pin-photo"><img src="https://cdn.prod.website-files.com/6a0aa7ef89da8343393b262a/6a0b2229e9b56934e314d6e5_ChatGPT%20Image%20May%2018%2C%202026%2C%2009_21_45%20AM.png" alt=""></div><div class="pin-bottom"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ZINE 2 — TUPAC -->
+<div class="zine-overlay" id="zine-tupac">
+  <span class="zine-close" onclick="closeZine('zine-tupac')">Back</span>
+  <div class="tupac-cover">
+    <div class="tupac-cover-left">
+      <p class="tupac-cover-eyebrow">002 &mdash; FAMD 4359 &middot; Cultural Editorial</p>
+      <h2 class="tupac-cover-title">Tupac<em>Reimagined</em></h2>
+      <p class="tupac-cover-desc">Cultural fashion editorial translating Tupac Shakur's 1990s LA aesthetic into a modern Spring look. Applied SCAMPER — a leather vest became a blue paisley vest. Built a full Runway Gen-4 pipeline producing editorial images and a TikTok OOTD video from a single run.</p>
+    </div>
+    <div class="tupac-cover-right">
+      <img src="https://cdn.prod.website-files.com/6a0aa7ef89da8343393b262a/6a0b238115582cba5576e413_ChatGPT%20Image%20May%2018%2C%202026%2C%2009_31_48%20AM.png" alt="">
+    </div>
+  </div>
+  <div class="tupac-gallery-section">
+    <div class="tupac-gallery">
+      <img src="https://cdn.prod.website-files.com/6a0aa7ef89da8343393b262a/6a0b2381c631f530d57cc75b_ChatGPT%20Image%20May%2018%2C%202026%2C%2012_35_12%20AM.png" alt="">
+      <img src="https://cdn.prod.website-files.com/6a0aa7ef89da8343393b262a/6a0b238115582cba5576e413_ChatGPT%20Image%20May%2018%2C%202026%2C%2009_31_48%20AM.png" alt="">
+      <img src="https://cdn.prod.website-files.com/6a0aa7ef89da8343393b262a/6a0b238261d67bdc6bc4f682_ChatGPT%20Image%20May%2018%2C%202026%2C%2009_31_29%20AM.png" alt="">
+    </div>
+  </div>
+  <div class="tupac-process-section">
+    <p class="tupac-process-label">Iteration Details</p>
+    <div class="tupac-steps">
+      <div class="tupac-step" style="padding-left:0">
+        <div class="tupac-step-num">01</div>
+        <p class="tupac-step-text">Started with ChatGPT renders to establish the cultural reference — Tupac's 1990s LA wardrobe translated to a contemporary Spring look</p>
+      </div>
+      <div class="tupac-step" style="padding-left:48px">
+        <div class="tupac-step-num">02</div>
+        <p class="tupac-step-text">Applied SCAMPER — Substitute transformed the original leather vest into a blue paisley vest, maintaining the silhouette while updating the cultural coding</p>
+      </div>
+      <div class="tupac-step" style="padding-left:48px;border-right:none">
+        <div class="tupac-step-num">03</div>
+        <p class="tupac-step-text">Rebuilt the full pipeline in Runway Gen-4 — single run producing editorial stills, campaign image, and TikTok OOTD video</p>
+      </div>
+    </div>
+  </div>
+  <div class="tupac-tags-section">
+    <span class="tupac-tag">Runway Gen-4</span><span class="tupac-tag">ChatGPT</span><span class="tupac-tag">Claude</span><span class="tupac-tag">SCAMPER</span>
+  </div>
+</div>
+
+<!-- ZINE 3 — AKARA -->
+<div class="zine-overlay" id="zine-akara">
+  <span class="zine-close" onclick="closeZine('zine-akara')">Back</span>
+  <div class="akara-cover">
+    <p class="akara-cover-eyebrow">003 &mdash; AI Model Development &middot; Creative Direction</p>
+    <h2 class="akara-cover-title">Akara</h2>
+    <p class="akara-cover-sub">AI Model &amp; Creative Direction &middot; @akaracali.official</p>
+    <p class="akara-cover-desc">Built and directed a consistent AI model across multiple looks, angles, and styling variations. California-bred creative rooted in SoCal and Central Valley culture. Maintains visual identity across front, side, and three quarter angles without a physical shoot.</p>
+  </div>
+  <div class="akara-images-section">
+    <div class="akara-img-grid">
+      <img src="https://raw.githubusercontent.com/ciantholm-ui/angel-holmes-portfolio/main/GPT%20Image%202%20-%20White%20seamless%20background%20with%20no%20texture%20or%20gradients_Subject%20Black%20female%20with%20deep.png" alt="">
+      <img src="https://raw.githubusercontent.com/ciantholm-ui/angel-holmes-portfolio/main/GPT%20Image%202%20-%20White%20seamless%20background%20fills%20the%20frame_Subject%20Black%20female%20with%20deep%20ebony%20skin%20an.png" alt="">
+      <img src="https://raw.githubusercontent.com/ciantholm-ui/angel-holmes-portfolio/main/GPT%20Image%202%20-%20Preserve%20exact%20features%20from%20reference_%20Do%20not%20alter%20skin%20tone_%20face%20shape_%20eyes_%20lips.png" alt="">
+    </div>
+  </div>
+  <div class="akara-process-section">
+    <p class="akara-process-label">Iteration Details</p>
+    <div class="akara-steps">
+      <div class="akara-step" style="padding-left:0">
+        <div class="akara-step-num">01</div>
+        <p class="akara-step-text">Original character built on Higgsfield Soul ID — established base identity, face, and visual consistency</p>
+      </div>
+      <div class="akara-step" style="padding-left:40px">
+        <div class="akara-step-num">02</div>
+        <p class="akara-step-text">Rendered new photos in Runway Gen-4 Image with enhanced prompts — used ChatGPT as the seed reference to anchor her identity</p>
+      </div>
+      <div class="akara-step" style="padding-left:40px">
+        <div class="akara-step-num">03</div>
+        <p class="akara-step-text">Best Runway output used as starting frame for HappyHorse 1.0 video generation — brought her to life with natural movement</p>
+      </div>
+      <div class="akara-step" style="padding-left:40px;border-right:none">
+        <div class="akara-step-num">04</div>
+        <p class="akara-step-text">Trimmed and refined the video output directly in Runway to achieve the final cinematic cut</p>
+      </div>
+    </div>
+  </div>
+  <div class="akara-videos-section">
+    <p class="akara-videos-label">Video Output &mdash; Download to View</p>
+    <div class="akara-video-links">
+      <a href="https://raw.githubusercontent.com/ciantholm-ui/angel-holmes-portfolio/main/HappyHorse%201_0%20-%20Use%20exact%20model%20from%20reference%20frame_%20Do%20not%20alter%20skin%20tone_%20face_%20or%20features_%20Se.mp4" class="akara-video-link" download>
+        <div class="play-btn"></div>
+        <div class="akara-video-meta">
+          <p class="akara-video-label">Akara &middot; Film 01</p>
+          <p class="akara-video-title">Studio Portrait &mdash; HappyHorse 1.0</p>
+        </div>
+      </a>
+      <a href="https://raw.githubusercontent.com/ciantholm-ui/angel-holmes-portfolio/main/HappyHorse%201_0%20-%20The...%2C%200.75x%2C%20Trim.mp4" class="akara-video-link" download>
+        <div class="play-btn"></div>
+        <div class="akara-video-meta">
+          <p class="akara-video-label">Akara &middot; Film 02</p>
+          <p class="akara-video-title">Extended Cut &mdash; HappyHorse 1.0</p>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="akara-tags-section">
+    <span class="akara-tag">Higgsfield</span><span class="akara-tag">ChatGPT</span><span class="akara-tag">Runway Gen-4</span><span class="akara-tag">HappyHorse 1.0</span>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="lb-close">ESC &mdash; Close</span>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<script>
+// Cursor
+var cur = document.getElementById('cursor');
+var ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove',function(e){
+  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+  ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';
+});
+
+// Zine open/close
+function openZine(id){
+  var el = document.getElementById(id);
+  el.style.display = 'block';
+  el.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  setTimeout(function(){ el.style.display='block'; },10);
+}
+function closeZine(id){
+  document.getElementById(id).style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    document.querySelectorAll('.zine-overlay').forEach(function(z){ z.style.display='none'; });
+    document.body.style.overflow='';
+    document.getElementById('lightbox').classList.remove('open');
+  }
+});
+
+// Lightbox
+var lb = document.getElementById('lightbox');
+var lbImg = document.getElementById('lb-img');
+document.querySelectorAll('.pin-photo img, .tupac-gallery img, .akara-img-grid img').forEach(function(img){
+  img.addEventListener('click',function(){
+    lbImg.src=img.src;
+    lb.classList.add('open');
+  });
+});
+document.getElementById('lb-close').addEventListener('click',function(){ lb.classList.remove('open'); });
+lb.addEventListener('click',function(e){ if(e.target===lb) lb.classList.remove('open'); });
+</script>
+</body>
+</html>
