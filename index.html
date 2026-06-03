@@ -142,14 +142,14 @@
     .process-row-content.outcome { color: var(--accent); font-weight: 500; }
 
     /* IMPACT */
-    .impact { padding: 80px 48px; border-bottom: 1px solid var(--rule); background: var(--bg-dark); color: #e8e2d9; }
-    .impact .section-rule-line { background: rgba(232,226,217,0.15); }
-    .impact .section-rule-label { color: rgba(232,226,217,0.4); }
-    .impact-title { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(232,226,217,0.4); margin-bottom: 48px; }
+    .impact { padding: 80px 48px; border-bottom: 1px solid var(--rule); background: var(--bg-card); color: var(--text); }
+    .impact .section-rule-line { background: var(--rule); }
+    .impact .section-rule-label { color: var(--muted); }
+    .impact-title { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 48px; }
     .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
-    .stat-card { background: #242424; border: 1px solid rgba(255,255,255,0.06); padding: 36px 28px; }
-    .stat-number { font-family: var(--serif); font-size: 42px; font-weight: 400; line-height: 1; margin-bottom: 12px; color: #e8e2d9; }
-    .stat-label { font-size: 12px; color: rgba(232,226,217,0.5); line-height: 1.5; }
+    .stat-card { background: var(--bg); border: 1px solid var(--rule); padding: 36px 28px; }
+    .stat-number { font-family: var(--serif); font-size: 42px; font-weight: 400; line-height: 1; margin-bottom: 12px; color: var(--text); }
+    .stat-label { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
     /* STUDIO */
     .studio { padding: 80px 48px; border-bottom: 1px solid var(--rule); }
@@ -177,18 +177,18 @@
     .academic-school { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
 
     /* CTA */
-    .cta-section { padding: 100px 48px; display: flex; flex-direction: column; align-items: center; text-align: center; border-top: 1px solid var(--rule); gap: 24px; background: var(--bg-dark); color: #e8e2d9; }
-    .cta-tag { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(232,226,217,0.4); }
-    .cta-headline { font-family: var(--serif); font-size: clamp(36px, 5vw, 64px); font-weight: 500; line-height: 1.1; max-width: 600px; color: #e8e2d9; }
+    .cta-section { padding: 100px 48px; display: flex; flex-direction: column; align-items: center; text-align: center; border-top: 1px solid var(--rule); gap: 24px; background: var(--bg); color: var(--text); }
+    .cta-tag { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); }
+    .cta-headline { font-family: var(--serif); font-size: clamp(36px, 5vw, 64px); font-weight: 500; line-height: 1.1; max-width: 600px; color: var(--text); }
     .cta-headline em { font-style: italic; color: var(--accent); }
     .cta-button { display: inline-block; margin-top: 12px; padding: 16px 40px; background: var(--accent); color: #fff; font-family: var(--sans); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none; font-weight: 500; transition: background 0.2s; }
     .cta-button:hover { background: #3a7bbf; }
-    .cta-sub { font-size: 13px; color: rgba(232,226,217,0.4); }
+    .cta-sub { font-size: 13px; color: var(--muted); }
 
     /* FOOTER */
-    footer { padding: 32px 48px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; background: var(--bg-dark); color: rgba(232,226,217,0.4); }
-    .footer-left { font-family: var(--serif); font-style: italic; font-size: 13px; }
-    .footer-right { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
+    footer { padding: 32px 48px; border-top: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; background: var(--bg); color: var(--muted); }
+    .footer-left { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--muted); }
+    .footer-right { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 
     /* OVERLAYS */
     .issue-overlay { display: none; position: fixed; inset: 0; z-index: 200; background: var(--bg); overflow-y: auto; }
@@ -295,33 +295,9 @@
     }
   </style>
 <style id="empathy-styles">
-  :root {
-    --bg:       #1a1a1a;
-    --card:     #212121;
-    --card2:    #252525;
-    --border:   rgba(255,255,255,0.08);
-    --accent:   #4892DB;
-    --accent2:  rgba(72,146,219,0.2);
-    --pain:     #c0584a;
-    --gain:     #2dac82;
-    --text:     #e0dbd4;
-    --muted:    #888077;
-    --serif:    'Playfair Display', Georgia, serif;
-    --sans:     'DM Sans', sans-serif;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    font-weight: 300;
-    font-size: 14px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    padding: 40px;
-    min-height: 100vh;
-    position: relative;
-  }
+  
+  
+  
 
   /* Watermark */
   .watermark {
@@ -1046,7 +1022,7 @@
       <p>Noz is a direct-to-consumer brand case study focused on building an ecommerce operation grounded in real customer insight. The work starts with research, who the customer is, what they actually need, and where the current experience fails them, then builds outward into Shopify architecture and product strategy.</p>
       <h3 class="issue-section-title">Customer Empathy Map</h3>
       <p>Built through customer interviews, social listening, and behavioral observation. Maps what the Noz customer thinks, feels, says, and does, and where those four things do not align. That gap is where the product and UX opportunity lives.</p>
-      <div style="margin:32px 0; border:1px solid var(--rule); overflow:hidden; border-radius:2px;"><span class="watermark">A.H.</span>
+      <div style="margin:32px 0; border:1px solid var(--rule); overflow:hidden; border-radius:2px; background:#1a1a1a; color:#e0dbd4;"><span class="watermark">A.H.</span>
 
 <div class="em-header">
   <div>
