@@ -1,173 +1,768 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Angel Holmes | AI Creative Practitioner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
   <style>
-    /* Reset and Base Styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --bg:         #EDE6D6;
+      --bg-card:    #E3DAC4;
+      --bg-dark:    #1A1A1A;
+      --accent:     #2F5E7A;
+      --accent-dim: rgba(47,94,122,0.18);
+      --text:       #1C1B19;
+      --muted:      #5B574C;
+      --rule:       #C9BFA6;
+      --redline:    #B23A2E;
+      --serif:      'Space Grotesk', sans-serif;
+      --sans:       'Space Mono', monospace;
     }
-    
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     body {
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      background-color: #fcfcfc; /* Solid, clean background. No grid. */
-      color: #111;
-      line-height: 1.6;
-      padding: 2rem;
-      max-width: 900px;
-      margin: 0 auto;
+      background: var(--bg);
+      background-attachment: fixed;
+      color: var(--text); font-family: var(--sans); font-weight: 400; font-size: 14px; line-height: 1.7; -webkit-font-smoothing: antialiased;
     }
+    .reg-mark { position: fixed; width: 16px; height: 16px; z-index: 150; pointer-events: none; opacity: 0.8; }
+    .reg-mark::before, .reg-mark::after { content: ""; position: absolute; background: var(--text); }
+    .reg-mark::before { width: 16px; height: 1.5px; top: 7px; left: 0; }
+    .reg-mark::after { width: 1.5px; height: 16px; left: 7px; top: 0; }
+    .reg-tl { top: 12px; left: 12px; }
+    .reg-tr { top: 12px; right: 12px; }
+    .reg-bl { bottom: 12px; left: 12px; }
+    .reg-br { bottom: 12px; right: 12px; }
 
-    /* Typography */
-    h1 {
-      font-size: 3rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 20px 48px; background: rgba(237,230,214,0.93); backdrop-filter: blur(12px); border-bottom: 1px solid var(--rule); }
+    .nav-logo { font-family: var(--serif); font-size: 14px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+
+    /* HERO */
+    .hero { position: relative; min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 140px 48px 80px; gap: 60px; border-bottom: 1px solid var(--rule); }
+    .hero-specbar { position: absolute; top: 96px; left: 48px; right: 48px; display: flex; justify-content: space-between; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--text); padding-bottom: 12px; }
+    .hero-specbar strong { color: var(--text); font-weight: 700; }
+    .hero-specbar .redline { color: var(--redline); font-weight: 700; }
+    .hero-left { display: flex; flex-direction: column; gap: 20px; }
+    .hero-issue-tag { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+    .hero-name { font-family: var(--serif); font-size: clamp(52px, 6vw, 82px); font-weight: 700; line-height: 0.98; letter-spacing: -0.01em; }
+    .hero-name em { font-style: normal; color: var(--accent); }
+    .hero-descriptor { font-family: var(--serif); font-size: 15px; font-weight: 500; color: var(--muted); }
+    .hero-tagline {
+      position: relative; display: inline-flex; align-self: flex-start;
+      font-family: var(--sans); font-weight: 700; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--redline); border: 1.5px solid var(--redline); padding: 8px 14px 8px 22px; transform: rotate(-2deg); background: var(--bg);
     }
+    .hero-tagline::before { content: ""; position: absolute; left: 8px; top: 50%; transform: translateY(-50%); width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--redline); background: var(--bg); }
+    .hero-tagline::after { content: ""; position: absolute; left: -16px; top: 50%; width: 16px; height: 1.5px; background: var(--redline); transform: rotate(18deg); }
+    .hero-bio { font-family: var(--serif); font-size: 15px; line-height: 1.7; color: var(--text); max-width: 460px; }
+    .hero-collection { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+    .hero-collection strong { color: var(--accent); }
+    .hero-collection span { padding: 3px 9px; border: 1px solid var(--rule); }
+    .hero-tools { display: flex; flex-wrap: wrap; gap: 0; border-top: 1px solid var(--text); padding-top: 12px; }
+    .hero-tools-label { width: 100%; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 8px; }
+    .tool-tag { font-size: 11px; letter-spacing: 0.04em; padding: 0 14px 0 0; margin-right: 14px; border: none; border-right: 1px solid var(--rule); color: var(--muted); background: transparent; }
+    .tool-tag:last-child { border-right: none; margin-right: 0; }
+    .hero-links { display: flex; gap: 20px; }
+    .hero-links a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text); text-decoration: none; border-bottom: 1.5px solid var(--redline); padding-bottom: 2px; transition: color 0.2s; }
+    .hero-links a:hover { color: var(--accent); }
+    .hero-right { position: relative; display: flex; flex-direction: column; align-items: flex-end; gap: 16px; }
+    .hero-image-frame { position: relative; width: 100%; max-width: 420px; aspect-ratio: 3/4; overflow: hidden; border: 1.5px solid var(--text); background: var(--bg-card); }
+    .hero-image-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+    .hero-image-caption { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-align: right; }
+    .callout { position: absolute; display: flex; align-items: center; z-index: 5; }
+    .callout .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); border: 1.5px solid var(--bg); flex-shrink: 0; }
+    .callout .line { height: 1.5px; width: 56px; background: var(--accent); }
+    .callout .label { font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent); font-weight: 700; white-space: nowrap; background: var(--bg); padding: 2px 6px; border: 1px solid var(--accent); }
+    .callout-top { top: 12%; left: -6%; }
+    .callout-top .line { order: 2; } .callout-top .dot { order: 3; } .callout-top .label { order: 1; }
+    .callout-mid { top: 50%; right: -6%; flex-direction: row-reverse; }
+    .callout-bot { bottom: 10%; left: -6%; }
+    .callout-bot .line { order: 2; } .callout-bot .dot { order: 3; } .callout-bot .label { order: 1; }
+
+    /* SECTION RULE */
+    .section-rule { display: flex; align-items: center; margin-bottom: 48px; border-bottom: 1.5px solid var(--text); padding-bottom: 12px; }
+    .section-rule-line { display: none; }
+    .section-rule-label { font-family: var(--sans); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--redline); font-weight: 700; white-space: nowrap; }
+
+    /* CREATIVE PRACTICE */
+    .creative-practice { padding: 80px 48px; border-bottom: 1px solid var(--rule); }
+    .cp-header { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; margin-bottom: 56px; }
+    .cp-title { font-family: var(--serif); font-size: clamp(32px, 4vw, 52px); font-weight: 500; line-height: 1.1; }
+    .cp-title em { font-style: italic; color: var(--accent); }
+    .cp-desc { color: var(--muted); font-size: 14px; line-height: 1.85; padding-top: 8px; border-left: 2px solid var(--rule); padding-left: 20px; }
+    .cp-caps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-bottom: 2px; }
+    .cp-cap { background: var(--bg-card); border: 1px solid var(--rule); padding: 28px 24px; transition: border-color 0.2s; }
+    .cp-cap:hover { border-color: var(--accent-dim); }
+    .cp-cap-label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .cp-cap-title { font-family: var(--serif); font-size: 18px; font-weight: 500; margin-bottom: 10px; }
+    .cp-cap-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    /* AKF FEATURE */
+    .akara-fubu-feature { margin-top: 2px; border: 1px solid var(--rule); background: var(--bg-card); }
+    .akf-label-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 28px; border-bottom: 1px solid var(--rule); }
+    .akf-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+    .akf-label-right { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+    .akf-hero-grid { display: grid; grid-template-columns: 1fr 1fr; }
+    .akf-hero-image { position: relative; overflow: hidden; border-right: 1px solid var(--rule); min-height: 480px; }
+    .akf-hero-image img { width: 100%; height: 100%; object-fit: cover; display: block; object-position: top; }
+    .akf-hero-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px 20px; background: linear-gradient(transparent, rgba(0,0,0,0.5)); }
+    .akf-hero-caption { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.7); }
+    .akf-right { padding: 36px 32px; display: flex; flex-direction: column; gap: 16px; }
+    .akf-title { font-family: var(--serif); font-size: clamp(22px, 2.5vw, 32px); font-weight: 500; line-height: 1.15; }
+    .akf-title em { font-style: italic; color: var(--accent); }
+    .akf-desc { font-size: 13px; color: var(--muted); line-height: 1.75; }
+    .akf-pipeline { margin-top: 16px; border-top: 1px solid var(--rule); padding-top: 20px; }
+    .akf-pipeline-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+    .akf-step { display: grid; grid-template-columns: 28px 1fr; gap: 12px; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--rule); }
+    .akf-step:last-child { border-bottom: none; margin-bottom: 0; }
+    .akf-step-num { font-family: var(--serif); font-size: 13px; color: var(--accent); opacity: 0.5; padding-top: 1px; }
+    .akf-step-title { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; margin-bottom: 3px; }
+    .akf-step-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+    .akf-prompt-block { border-top: 1px solid var(--rule); padding: 28px 32px; }
+    .akf-prompt-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+    .akf-prompt-text { font-family: 'Courier New', monospace; font-size: 11.5px; color: var(--muted); line-height: 1.7; border-left: 2px solid var(--rule); padding-left: 20px; }
+    .akf-prompt-text strong { color: var(--text); font-weight: 500; letter-spacing: 0.04em; }
+    .akf-ref-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--rule); align-items: stretch; }
+    .akf-ref-card { padding: 24px; border-right: 1px solid var(--rule); display: flex; flex-direction: column; }
+    .akf-ref-card:last-child { border-right: none; }
+    .akf-ref-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+    .akf-ref-card img { width: 100%; object-fit: contain; display: block; margin-bottom: 10px; border: 1px solid var(--rule); max-height: 360px; }
+    .akf-ref-caption { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+    .akf-spec-box { background: var(--bg); border: 1px solid var(--rule); padding: 16px; margin-bottom: 10px; }
+    .akf-spec-title { font-family: var(--serif); font-size: 14px; font-weight: 500; margin-bottom: 10px; }
+    .akf-spec-list { list-style: none; }
+    .akf-spec-list li { font-size: 11px; color: var(--muted); padding: 4px 0; border-bottom: 1px solid var(--rule); line-height: 1.4; }
+    .akf-spec-list li:last-child { border-bottom: none; }
+    .akf-spec-colors { display: flex; gap: 6px; margin-top: 12px; }
+    .akf-color { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--rule); display: block; }
+    .akf-concept-box { background: var(--bg); border: 1px solid var(--rule); padding: 20px; margin-bottom: 10px; min-height: 160px; display: flex; flex-direction: column; justify-content: center; }
+    .akf-concept-text { font-family: var(--serif); font-style: italic; font-size: 14px; line-height: 1.65; color: var(--text); margin-bottom: 12px; }
+    .akf-concept-ref { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+
+    /* ARCHIVE */
+    .archive { padding: 80px 48px; border-bottom: 1px solid var(--rule); }
+    .archive-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 48px; }
+    .archive-count { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+    .issues-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .issue-card { background: var(--bg-card); border: 1px solid var(--rule); overflow: hidden; cursor: pointer; transition: border-color 0.25s; }
+    .issue-card:hover { border-color: #B0B0A8; }
+    .issue-card-image { width: 100%; aspect-ratio: 4/5; overflow: hidden; background: var(--bg-card); }
+    .issue-card-image img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transition: transform 0.5s ease; }
+    .issue-card:hover .issue-card-image img { transform: scale(1.03); }
+    .issue-card-body { padding: 24px 28px 28px; }
+    .issue-card-meta { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .issue-card-title { font-family: var(--serif); font-size: 24px; font-weight: 500; line-height: 1.15; margin-bottom: 8px; }
+    .issue-card-subtitle { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+    .issue-card-cta { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-dim); padding-bottom: 2px; transition: border-color 0.2s; }
+    .issue-card-cta:hover { border-color: var(--accent); }
+
+    /* PROCESS GRID */
+    .process-section { padding: 80px 48px; border-bottom: 1px solid var(--rule); }
+    .process-intro { font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 56px; border-left: 2px solid var(--accent); padding-left: 20px; }
+    .process-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .process-card { border: 1px solid var(--rule); background: var(--bg-card); padding: 32px; }
+    .process-card-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+    .process-card-title { font-family: var(--serif); font-size: 20px; font-weight: 500; margin-bottom: 24px; }
+    .process-row { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--rule); }
+    .process-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .process-row-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .process-row-content { font-size: 13px; color: var(--text); line-height: 1.65; }
+    .process-row-content.prompt { font-family: 'Courier New', monospace; font-size: 11.5px; color: var(--muted); background: var(--bg); border: 1px solid var(--rule); padding: 12px; }
+    .process-row-content.outcome { color: var(--accent); font-weight: 500; }
+
+    /* IMPACT */
+    .impact { padding: 80px 48px; border-bottom: 1px solid var(--rule); background: var(--bg-card); color: var(--text); }
+    .impact .section-rule-line { background: var(--rule); }
+    .impact .section-rule-label { color: var(--muted); }
+    .impact-title { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 48px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+    .stat-card { background: var(--bg); border: 1px solid var(--rule); padding: 36px 28px; }
+    .stat-number { font-family: var(--serif); font-size: 42px; font-weight: 400; line-height: 1; margin-bottom: 12px; color: var(--text); }
+    .stat-label { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* STUDIO */
+    .studio { padding: 80px 48px; border-bottom: 1px solid var(--rule); }
+    .studio-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; margin-bottom: 64px; }
+    .studio-headline { font-family: var(--serif); font-size: clamp(28px, 3.5vw, 44px); font-weight: 500; line-height: 1.15; }
+    .studio-tagline { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-top: 16px; }
+    .studio-desc { font-size: 14px; color: var(--muted); line-height: 1.8; margin-bottom: 20px; }
+    .funnel-block { padding: 28px; border: 1px solid var(--rule); background: var(--bg-card); }
+    .funnel-block-label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+    .funnel-block-title { font-family: var(--serif); font-size: 18px; font-weight: 500; margin-bottom: 12px; }
+    .funnel-stages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+    .funnel-stage { padding: 14px; border: 1px solid var(--rule); border-top: 2px solid var(--accent-dim); }
+    .funnel-stage-name { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+    .funnel-stage-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .exp-title { font-family: var(--serif); font-size: 20px; font-weight: 500; margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid var(--rule); }
+    .exp-item { display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding: 28px 0; border-bottom: 1px solid var(--rule); }
+    .exp-meta { color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .exp-content-title { font-family: var(--serif); font-size: 17px; font-weight: 500; margin-bottom: 8px; }
+    .exp-content-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 12px; }
+    .experience-section { margin-bottom: 60px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .tag { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 9px; border: 1px solid var(--rule); color: var(--muted); border-radius: 0; }
+    .academic-block { padding: 36px; border: 1px solid var(--rule); background: var(--bg-card); }
+    .academic-degree { font-family: var(--serif); font-size: 20px; font-weight: 500; margin-bottom: 6px; }
+    .academic-school { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+
+    /* CTA */
+    .cta-section { padding: 100px 48px; display: flex; flex-direction: column; align-items: center; text-align: center; border-top: 1px solid var(--rule); gap: 24px; background: var(--bg); color: var(--text); }
+    .cta-tag { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); }
+    .cta-headline { font-family: var(--serif); font-size: clamp(36px, 5vw, 64px); font-weight: 500; line-height: 1.1; max-width: 600px; color: var(--text); }
+    .cta-headline em { font-style: italic; color: var(--accent); }
+    .cta-button { display: inline-block; margin-top: 12px; padding: 16px 40px; background: var(--accent); color: #fff; font-family: var(--sans); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none; font-weight: 500; transition: background 0.2s; }
+    .cta-button:hover { background: #3a7bbf; }
+    .cta-sub { font-size: 13px; color: var(--muted); }
+
+    /* FOOTER */
+    footer { padding: 32px 48px; border-top: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; background: var(--bg); color: var(--muted); }
+    .footer-left { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--muted); }
+    .footer-right { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+
+    /* OVERLAYS */
+    .issue-overlay { display: none; position: fixed; inset: 0; z-index: 200; background: var(--bg); overflow-y: auto; }
+    .issue-overlay.active { display: block; }
+    .issue-overlay-inner { max-width: 900px; margin: 0 auto; padding: 80px 48px 120px; }
+    .issue-back { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); background: none; border: none; cursor: pointer; padding: 0; margin-bottom: 48px; display: inline-flex; align-items: center; gap: 8px; transition: color 0.2s; }
+    .issue-back:hover { color: var(--text); }
     
-    h2 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
+    .issue-number { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+    .issue-title { font-family: var(--serif); font-size: clamp(40px, 6vw, 72px); font-weight: 500; line-height: 1.05; margin-bottom: 16px; }
+    .issue-subtitle { font-size: 14px; color: var(--muted); margin-bottom: 40px; }
+    .issue-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
+    .issue-tool { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; border: 1px solid var(--rule); color: var(--muted); border-radius: 0; }
+    .issue-intro { font-family: var(--serif); font-style: italic; font-size: 18px; line-height: 1.6; border-left: 2px solid var(--accent); padding-left: 24px; margin-bottom: 48px; color: var(--text); }
+    .issue-body { font-size: 15px; line-height: 1.8; color: var(--muted); }
+    .issue-section-title { font-family: var(--serif); font-size: 22px; font-weight: 500; margin: 48px 0 16px; padding-bottom: 12px; border-bottom: 1px solid var(--rule); color: var(--text); }
+    .issue-images { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin: 32px 0; }
+    .issue-images.two-col { grid-template-columns: repeat(2, 1fr); }
+    .issue-images.one-col { grid-template-columns: 1fr; }
+    .issue-images img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; cursor: zoom-in; }
+    .issue-caption { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 8px; text-align: center; }
+    .issue-detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin: 32px 0; }
+    .issue-detail { background: var(--bg-card); border: 1px solid var(--rule); padding: 24px; }
+    .issue-detail-num { font-family: var(--serif); font-size: 32px; color: var(--accent); opacity: 0.3; line-height: 1; margin-bottom: 8px; }
+    .issue-detail-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .issue-detail-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { gap: 20px; }
+      .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
+      .cp-header { grid-template-columns: 1fr; }
+      .cp-caps { grid-template-columns: 1fr; }
+      .akf-hero-grid { grid-template-columns: 1fr; }
+      .akf-hero-image { border-right: none; border-bottom: 1px solid var(--rule); }
+      .akf-ref-grid { grid-template-columns: 1fr; }
+      .akf-ref-card { border-right: none; border-bottom: 1px solid var(--rule); }
+      .issues-grid { grid-template-columns: 1fr; }
+      .process-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .studio-intro { grid-template-columns: 1fr; }
+      .funnel-stages { grid-template-columns: repeat(2, 1fr); }
+      .exp-item { grid-template-columns: 1fr; gap: 8px; }
+      .issue-detail-grid { grid-template-columns: 1fr; }
+      .issue-images { grid-template-columns: repeat(2, 1fr); }
+      .creative-practice, .archive, .process-section, .studio { padding: 60px 24px; }
+      .impact { padding: 60px 24px; }
+      .cta-section { padding: 80px 24px; }
+      footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+      .issue-overlay-inner { padding: 60px 24px 80px; }
     }
 
-    h3 {
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: #555;
-      margin-bottom: 1.5rem;
+    /* LIGHTBOX */
+    .lightbox-overlay {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,0.92);
+      align-items: center; justify-content: center;
+      cursor: zoom-out;
+    }
+    .lightbox-overlay.active { display: flex; }
+    .lightbox-img {
+      max-width: 90vw; max-height: 90vh;
+      object-fit: contain;
+      border: 1px solid rgba(255,255,255,0.1);
+      cursor: default;
+    }
+    .lightbox-close {
+      position: fixed; top: 24px; right: 32px;
+      font-size: 28px; color: rgba(255,255,255,0.7);
+      background: none; border: none; cursor: pointer;
+      line-height: 1; transition: color 0.2s;
+      font-family: var(--sans); font-weight: 300;
+      z-index: 1000;
+    }
+    .lightbox-close:hover { color: #fff; }
+    .lightbox-caption {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+    /* Make portfolio images clickable */
+    .issue-images img, .issue-overlay img:not(.no-lightbox) {
+      cursor: zoom-in;
     }
 
-    p {
-      font-size: 1.1rem;
-      margin-bottom: 1.5rem;
-      max-width: 750px;
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 1.5px; background: var(--text);
+      transition: all 0.3s;
+    }
+    @media (max-width: 700px) {
+      .nav-links { display: none; flex-direction: column; position: fixed; top: 60px; left: 0; right: 0; background: rgba(249,249,247,0.97); border-bottom: 1px solid var(--rule); padding: 24px 24px; gap: 20px; z-index: 99; backdrop-filter: blur(12px); }
+      .nav-links.open { display: flex; }
+      .nav-links a { font-size: 14px; }
+      .nav-hamburger { display: flex; }
     }
 
-    .issue-tag {
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #777;
-      margin-bottom: 0.5rem;
-      display: block;
+    .issue-body img, .akf-ref-card img, .akf-hero-image img, .issue-images img {
+      cursor: zoom-in;
     }
 
-    /* Layout Spacing */
-    header, section {
-      margin-bottom: 5rem;
-      padding-bottom: 3rem;
-      border-bottom: 1px solid #eee;
-    }
-
-    section:last-child {
-      border-bottom: none;
-    }
-
-    /* Lists */
-    ul {
-      list-style: none;
-      margin-bottom: 2rem;
-    }
-
-    ul li {
-      font-size: 1.1rem;
-      margin-bottom: 0.75rem;
-      padding-left: 1.5rem;
-      position: relative;
-    }
-
+    /* Override bullets to remove em dashes */
     ul li::before {
-      content: "—";
+      content: "\2022";
       position: absolute;
       left: 0;
       color: #999;
     }
-
-    /* Contact Links */
-    a {
-      color: #111;
-      text-decoration: none;
-      border-bottom: 1px solid #111;
-      padding-bottom: 2px;
-      transition: color 0.2s, border-color 0.2s;
-    }
-
-    a:hover {
-      color: #555;
-      border-color: #555;
-    }
-
-    .contact-block {
-      margin-top: 3rem;
-      padding: 2rem;
-      background: #f4f4f4;
-      border-radius: 4px;
-    }
-
-    .contact-block p {
-      margin-bottom: 0.5rem;
-    }
   </style>
+<style id="empathy-styles">
+  /* Watermark */
+  .watermark {
+    position: absolute;
+    bottom: 16px;
+    right: 20px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    opacity: 0.25;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Header */
+  .em-header {
+    margin-bottom: 32px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .em-tag {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #888077;
+    margin-bottom: 6px;
+  }
+  .em-title {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+  .em-sub {
+    font-size: 13px;
+    color: var(--accent);
+    margin-top: 4px;
+    letter-spacing: 0.04em;
+  }
+  .em-header-right {
+    text-align: right;
+  }
+  .em-persona-circle {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 1.5px solid var(--accent);
+    background: #212121;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+  }
+  .em-persona-name { font-size: 13px; font-weight: 500; color: var(--text); }
+  .em-persona-role { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-top: 2px; }
+
+  /* Main grid */
+  .em-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 3px;
+    margin-bottom: 3px;
+  }
+  .quadrant {
+    background: #212121;
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 24px;
+  }
+  .q-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  .em-chip {
+    display: inline-block;
+    background: #252525;
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 5px 11px;
+    font-size: 12px;
+    color: #e0dbd4;
+    margin: 3px 2px;
+    line-height: 1.45;
+    border-radius: 0;
+  }
+
+  /* Bottom row, pains + gains */
+  .em-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+    margin-bottom: 3px;
+  }
+  .side-card {
+    background: #212121;
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 24px;
+  }
+  .side-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+  .side-label.pain { color: var(--pain); }
+  .side-label.gain { color: var(--gain); }
+  .bullet {
+    font-size: 13px;
+    color: rgba(224,219,212,0.8);
+    padding: 7px 0 7px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+    line-height: 1.5;
+  }
+  .bullet:last-child { border-bottom: none; }
+  .bullet::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 10px;
+    top: 9px;
+  }
+  .bullet.pain-item::before { color: var(--pain); }
+  .bullet.gain-item::before { color: var(--gain); }
+
+  /* Shopify section */
+  .shopify-section {
+    margin-top: 3px;
+    background: #212121;
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 24px;
+  }
+  .shopify-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  .shopify-img {
+    width: 100%;
+    display: block;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .shopify-caption {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 10px;
+    text-align: right;
+  }
+
+  /* Footer */
+  .em-footer {
+    margin-top: 32px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .em-footer-left {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .em-footer-right {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+</style>
 </head>
 <body>
 
-  <header class="hero-section">
-    <h1>Angel Holmes</h1>
-    <h2>Culture studied. Not borrowed.</h2>
-    <h3>AI Creative Practitioner / Fashion Merchandising</h3>
-    <p>I build AI generated fashion campaigns from the initial brief to the final asset and design ecommerce strategies from customer persona to storefront. Akara is my proprietary AI model. Her face, skin tone, and bone structure are locked across every frame. The archive below is the proof.</p>
-  </header>
+<div class="reg-mark reg-tl"></div>
+<div class="reg-mark reg-tr"></div>
+<div class="reg-mark reg-bl"></div>
+<div class="reg-mark reg-br"></div>
 
-  <section class="project-noz">
-    <span class="issue-tag">ISSUE 001 / ECOMMERCE STRATEGY</span>
-    <h2>Nöz Ecommerce</h2>
-    <h3>Systems that think. Creative that performs.</h3>
-    <p>Creative practice requires infrastructure to scale. Grounded in seven years of client operations, my work ensures the vision is intentional and the execution is flawless.</p>
-    <p>For Nöz, I engineered a full funnel Shopify architecture built to convert. Moving beyond basic templates, I customized the Brooklyn theme, mapped out customer empathy, and optimized the entire user experience from the initial lookbook straight to the checkout cart. This is exactly where cultural resonance meets hard commerce.</p>
-  </section>
+<nav>
+  <span class="nav-logo">A.H.</span>
+  <button class="nav-hamburger" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#archive">Archive</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#studio">Studio</a></li>
+    <li><a href="mailto:angelholmes_@outlook.com">Contact</a></li>
+  </ul>
+</nav>
 
-  <section class="project-fubu">
-    <span class="issue-tag">ISSUE 002 / AI CAMPAIGN PRODUCTION</span>
-    <h2>Akara x FUBU</h2>
-    <h3>One model. Three looks. One pipeline.</h3>
-    <p>Akara styled across three reimagined FUBU garments. The model identity is locked across every output. The garment is the variable. The pipeline runs the exact same way each time.</p>
-    <p>A brand brings a garment. The model identity is already established. The pipeline runs and the output is campaign ready. No studio day. No photographer. No booking.</p>
-    
-    <ul class="workflow-details">
-      <li><strong>Model Identity Lock:</strong> Akara base reference established in Higgsfield Soul ID. Face, skin tone, bone structure, and bob locked. ChatGPT seed used to anchor identity before generation.</li>
-      <li><strong>Garment Input:</strong> FUBU Technical Utility Jacket spec translated into prompt language with precise fabric, hardware, and silhouette detail.</li>
-      <li><strong>Creative Direction:</strong> Giant figure towering over a city concept. Dramatic low aerial angle, city skyline below, cinematic blue sky.</li>
-      <li><strong>Tech Stack:</strong> Runway Gen-4, GPT Image 2, ChatGPT, Higgsfield.</li>
-    </ul>
-  </section>
-
-  <section class="studio-formation">
-    <h2>STUDIO FORMATION</h2>
-    <h3>Intelligence / Impact / Intention</h3>
-    <p>Every project starts with a real question about culture, identity, or commerce. The tools change. The standard does not.</p>
-    
-    <ul class="funnel-skills">
-      <li><strong>Awareness:</strong> Editorial content, AI generated campaign assets, and social strategy.</li>
-      <li><strong>Consideration:</strong> Competitive analysis, SCAMPER framework, and empathy mapping.</li>
-      <li><strong>Conversion:</strong> Ecommerce product copy, Shopify UX, and lookbook to cart flow.</li>
-      <li><strong>Retention:</strong> Client satisfaction operations, post purchase communication, and loyalty flows.</li>
-    </ul>
-
-    <div class="contact-block">
-      <p><strong>The work speaks. Let us talk.</strong></p>
-      <p><a href="mailto:angelholmes_@outlook.com">angelholmes_@outlook.com</a></p>
-      <p>Open to Remote</p>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-specbar">
+    <span>Spec sheet <strong>no. 001</strong></span>
+    <span>Style: <strong>A. Holmes</strong></span>
+    <span class="redline">Rev A * Scale 1:1</span>
+  </div>
+  <div class="hero-left">
+    <span class="hero-issue-tag">AI Creative Practitioner</span>
+    <h1 class="hero-name">Angel<br/><em>Holmes</em></h1>
+    <div class="hero-tagline">Culture studied. Not borrowed.</div>
+    <p class="hero-descriptor">AI Campaign Production / Fashion Merchandising / Ecommerce Architecture</p>
+    <p class="hero-bio">I engineer AI generated fashion campaigns from the initial brief to the final asset, alongside building full funnel ecommerce strategies. My proprietary AI model, Akara, stays locked to the exact bone structure, rich ebony skin, and jet black bob across every frame. No bias artifacts. Just authentic, high converting creative.</p>
+    <div class="hero-collection"><strong>Current collection: </strong><span>Nöz Ecommerce</span><span>Akara</span><span>Akara x FUBU</span></div>
+    <div class="hero-tools">
+      <span class="hero-tools-label">Notions / tools on this build</span>
+      <span class="tool-tag">Gen-4 Image</span>
+      <span class="tool-tag">GPT Image 2</span>
+      <span class="tool-tag">ChatGPT</span>
+      <span class="tool-tag">Higgsfield</span>
     </div>
-  </section>
+    <div class="hero-links">
+      <a href="mailto:angelholmes_@outlook.com">Email</a>
+      <a href="https://linkedin.com/in/angelholmes26" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-image-frame">
+      <img src="https://raw.githubusercontent.com/ciantholm-ui/angel-holmes-portfolio/main/Me.png" alt="Angel Holmes"/>
+      <div class="callout callout-mid"><span class="dot"></span><span class="line"></span><span class="label">Akara: locked identity</span></div>
+      <div class="callout callout-bot"><span class="dot"></span><span class="line"></span><span class="label">GPT Image 2: production</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CREATIVE PRACTICE -->
+<section class="creative-practice" id="work">
+  <div class="section-rule">
+    <div class="section-rule-line"></div>
+    <span class="section-rule-label">/ Creative Practice</span>
+    <div class="section-rule-line"></div>
+  </div>
+  <div class="cp-header">
+    <h2 class="cp-title">Culture studied.<br/><em>Not borrowed.</em></h2>
+    <p class="cp-desc">Fashion research, AI production, and brand strategy working together. Every project starts with a real question about culture, identity, or commerce. The tools change. The standard does not.</p>
+  </div>
+  <div class="cp-caps">
+    <div class="cp-cap">
+      <p class="cp-cap-label">Image Generation</p>
+      <h3 class="cp-cap-title">Campaign Without a Studio</h3>
+      <p class="cp-cap-desc">Fashion editorials and campaign shots generated without a photography budget. Three garments, three looks, one consistent model across every output.</p>
+    </div>
+    <div class="cp-cap">
+      <p class="cp-cap-label">Motion</p>
+      <h3 class="cp-cap-title">Identity in Motion</h3>
+      <p class="cp-cap-desc">Still frames prepared for motion. Akara identity built on Higgsfield Soul ID, preserved across every tool transition.</p>
+    </div>
+    <div class="cp-cap">
+      <p class="cp-cap-label">Workflow</p>
+      <h3 class="cp-cap-title">Repeatable by Design</h3>
+      <p class="cp-cap-desc">Locked model identity plus swappable garment input generates a campaign ready image in a single workflow run. Built, documented, and screenshot in the archive.</p>
+    </div>
+  </div>
+
+  <!-- NÖZ MAIN STAGE -->
+  <div class="akara-fubu-feature" style="margin-bottom: 40px;">
+    <div class="akf-label-row">
+      <span class="akf-label">Issue 001 / Ecommerce Strategy</span>
+      <span class="akf-label-right">Nöz Ecommerce / 2026</span>
+    </div>
+    <div class="akf-hero-grid">
+      <div class="akf-right" style="border-right: 1px solid var(--rule);">
+        <h2 class="akf-title">Systems that think.<br/><em>Creative that performs.</em></h2>
+        <p class="akf-desc">Creative practice requires infrastructure to scale. Grounded in seven years of client operations, my work ensures the vision is intentional and the execution is flawless.</p>
+        
+        <div class="akf-pipeline">
+          <span class="akf-pipeline-label">Full Funnel Architecture</span>
+          <div class="akf-step">
+            <span class="akf-step-num">01</span>
+            <div>
+              <h4 class="akf-step-title">Storefront Engineering</h4>
+              <p class="akf-step-desc">For Nöz, I engineered a complete Shopify architecture built to convert. Moving beyond basic templates, I customized the Brooklyn theme, mapped out customer empathy, and optimized the entire user experience from the initial lookbook straight to the checkout cart.</p>
+            </div>
+          </div>
+          <div class="akf-step">
+            <span class="akf-step-num">02</span>
+            <div>
+              <h4 class="akf-step-title">Manufacturing Demand</h4>
+              <p class="akf-step-desc">Search volume for "neon colored sunscreen" and "colored nose sunscreen" registers completely flat in market data. Demand had to be manufactured from scratch. I built a dynamic bundle pricing architecture designed to intentionally drive up average order value while establishing pure brand identity.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="akf-hero-image" style="background-color: #212121; display: flex; align-items: center; justify-content: center; padding: 40px; min-height: 480px;">
+        <div style="text-align: center;">
+          <h3 style="color: var(--accent); font-family: var(--serif); font-size: 28px; margin-bottom: 10px;">Nözscreen</h3>
+          <p style="font-size: 13px; font-family: var(--sans); color: #e0dbd4; letter-spacing: 0.1em; text-transform: uppercase;">Shopify / Brooklyn Theme / Bundle Architecture</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AKARA x FUBU FEATURE -->
+  <div class="akara-fubu-feature">
+    <div class="akf-label-row">
+      <span class="akf-label">Issue 002 / AI Campaign Production</span>
+      <span class="akf-label-right">Akara x FUBU / 2026</span>
+    </div>
+    <div class="akf-hero-grid">
+      <div class="akf-hero-image">
+        <!-- Re-add image src as needed -->
+        <div style="width: 100%; height: 100%; background: #ccc;"></div>
+        <div class="akf-hero-overlay">
+          <p class="akf-hero-caption">Final Output / GPT Image 2 / 16:9 / High Quality</p>
+        </div>
+      </div>
+      <div class="akf-right">
+        <h2 class="akf-title">One model. Three looks.<br/><em>One pipeline.</em></h2>
+        <p class="akf-desc">Akara styled across three reimagined FUBU garments. The model identity is locked across every output. The garment is the variable. The pipeline runs the exact same way each time. A brand brings a garment. The model identity is already established. The pipeline runs and the output is campaign ready. No studio day, no photographer, no booking.</p>
+        
+        <div class="akf-pipeline">
+          <span class="akf-pipeline-label">Process / In Order</span>
+          
+          <div class="akf-step">
+            <span class="akf-step-num">01</span>
+            <div>
+              <h4 class="akf-step-title">Model Identity Lock</h4>
+              <p class="akf-step-desc">Akara base reference established in Higgsfield Soul ID. Face, skin tone, bone structure, and bob locked. ChatGPT seed used to anchor identity before generation.</p>
+            </div>
+          </div>
+          
+          <div class="akf-step">
+            <span class="akf-step-num">02</span>
+            <div>
+              <h4 class="akf-step-title">Garment Input</h4>
+              <p class="akf-step-desc">FUBU Technical Utility Jacket spec translated into prompt language with precise fabric, hardware, and silhouette detail.</p>
+            </div>
+          </div>
+          
+          <div class="akf-step">
+            <span class="akf-step-num">03</span>
+            <div>
+              <h4 class="akf-step-title">Creative Direction</h4>
+              <p class="akf-step-desc">Giant figure towering over a city concept. Dramatic low aerial angle, city skyline below, cinematic blue sky.</p>
+            </div>
+          </div>
+
+          <div class="akf-step">
+            <span class="akf-step-num">04</span>
+            <div>
+              <h4 class="akf-step-title">Tech Stack</h4>
+              <p class="akf-step-desc">Runway Gen-4, GPT Image 2, ChatGPT, Higgsfield.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="akf-prompt-block">
+      <span class="akf-prompt-label">Full Prompt / Documented</span>
+      <p class="akf-prompt-text">
+        <strong>Identity lock:</strong> This model's face is locked. Reject any generation that alters her features. Black female model, deep rich ebony skin, warm undertones, high cheekbones, full lips, dark almond eyes, ear-length jet black bob.<br/><br/>
+        <strong>Styling:</strong> Red FUBU utility jacket, cropped boxy ripstop shell, tonal red embroidered logo, shockcord hem, hidden zip pockets. Medium wash denim jorts, white clean sole sneakers.<br/><br/>
+        <strong>Scene:</strong> Akara as a giant figure towering over a major city skyline, shot from a dramatic low aerial angle. One hand extended toward the lens with a plane in hand, pulling it out of the sky. Wind moves through her hair.<br/><br/>
+        <strong>Settings:</strong> GPT Image 2 * 16:9 * 1K * High Quality
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- STUDIO FORMATION -->
+<section class="studio-formation" id="studio">
+  <div class="section-rule">
+    <div class="section-rule-line"></div>
+    <span class="section-rule-label">/ Studio Formation</span>
+    <div class="section-rule-line"></div>
+  </div>
+  
+  <div class="studio-intro">
+    <div>
+      <h2 class="studio-headline">Intelligence / Impact / Intention</h2>
+      <p class="studio-tagline">Systems that think. Creative that performs.</p>
+    </div>
+    <div>
+      <p class="studio-desc">Every project starts with a real question about culture, identity, or commerce. The tools change. The standard does not.</p>
+    </div>
+  </div>
+
+  <div class="funnel-block">
+    <span class="funnel-block-label">Marketing Funnel Knowledge</span>
+    <h3 class="funnel-block-title">Full Funnel Campaign Architecture</h3>
+    <div class="funnel-stages">
+      <div class="funnel-stage">
+        <h4 class="funnel-stage-name">Awareness</h4>
+        <p class="funnel-stage-desc">Editorial content, AI generated campaign assets, and social strategy.</p>
+      </div>
+      <div class="funnel-stage">
+        <h4 class="funnel-stage-name">Consideration</h4>
+        <p class="funnel-stage-desc">Competitive analysis, SCAMPER framework, and empathy mapping.</p>
+      </div>
+      <div class="funnel-stage">
+        <h4 class="funnel-stage-name">Conversion</h4>
+        <p class="funnel-stage-desc">Ecommerce product copy, Shopify UX, and lookbook to cart flow.</p>
+      </div>
+      <div class="funnel-stage">
+        <h4 class="funnel-stage-name">Retention</h4>
+        <p class="funnel-stage-desc">Client satisfaction operations, post purchase communication, and loyalty flows.</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="contact-block">
+    <p><strong>The work speaks. Let us talk.</strong></p>
+    <p><a href="mailto:angelholmes_@outlook.com">angelholmes_@outlook.com</a></p>
+    <p>Open to Remote</p>
+  </div>
+</section>
 
 </body>
 </html>
